@@ -5,6 +5,7 @@ SampleApp::Application.routes.draw do
   get "static_pages/home"
   get "static_pages/help"
   get "static_pages/about"
+  get "static_pages/contact"
 
   # For these routes it must be 'static_pages#home' instead of
   # static_pages/home. The error if there is a slash says missing
@@ -12,6 +13,7 @@ SampleApp::Application.routes.draw do
   match "/home" => "static_pages#home"
   match "/about" => "static_pages#about"
   match "/help" => "static_pages#help"
+  match "/contact" => "static_pages#contact"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
