@@ -1,19 +1,16 @@
 SampleApp::Application.routes.draw do
-  # Even though these exactly match controller methods,
-  # every route needs to be in here.
-  # I don't really understand entirely...
-  get "static_pages/home"
-  get "static_pages/help"
-  get "static_pages/about"
-  get "static_pages/contact"
+  get 'users/new'
 
+  root to: 'static_pages#home'
   # For these routes it must be 'static_pages#home' instead of
   # static_pages/home. The error if there is a slash says missing
   # :action. The second half of this 'match' is an action, not a URI.
-  match "/home" => "static_pages#home"
-  match "/about" => "static_pages#about"
-  match "/help" => "static_pages#help"
-  match "/contact" => "static_pages#contact"
+  #
+  # These routes also create named routes (root_path, about_path, etc.)
+  match '/signup', to: 'users#new'
+  match '/about', to: 'static_pages#about'
+  match '/help', to: 'static_pages#help'
+  match '/contact', to: 'static_pages#contact'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
