@@ -127,4 +127,15 @@ describe User do
       specify { user_for_invalid_password.should be_false }
     end
   end
+
+  # Test the downcasing of a saved password.
+  describe "email address with mixed case" do
+    let(:mixed_case_email) { "Foo@ExAmPlE.CoM" }
+
+    it "should be saved as all lowercase" do
+      @user.email = mixed_case_email
+      @user.save
+      @user.reload.email.should == mixed_case_email.downcase
+    end
+  end
 end

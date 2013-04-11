@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
 
   # Not all databases use case-sensitive indices. (?)
   # We want all emails to be saved as lowercase for consistency.
-  before_save { |user| user.email = email.downcase }
+  before_save { email.downcase! }
 
   # Name must exist and be a string shorter than 51 characters.
   validates :name, presence: true, 
