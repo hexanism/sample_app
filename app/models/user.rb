@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
   # Not all databases use case-sensitive indices. (?)
   # We want all emails to be saved as lowercase for consistency.
   before_save { email.downcase! }
+  before_save :create_remember_token
 
   # Name must exist and be a string shorter than 51 characters.
   validates :name, presence: true, 
@@ -29,4 +30,10 @@ class User < ActiveRecord::Base
   validates :password, presence: true, 
                        length: { minimum: 6 }
   validates :password_confirmation, presence: true
+
+  private
+
+  def create_remember_token
+    self.remember_token = SecureRandom.urlsafe_base64
+  end
 end

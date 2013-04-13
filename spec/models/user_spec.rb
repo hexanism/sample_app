@@ -12,16 +12,20 @@
 require 'spec_helper'
 
 describe User do
+  # Create a user to use in the tests...
   before { @user = User.new(name:"Example User", email: "user@example.com",
                           password: 'foobar', password_confirmation: 'foobar') }
+  # ...and set it as the subject.
   subject { @user }
 
+  # The user should behave like a user object should.
   it { should respond_to(:name) }
   it { should respond_to(:email) }
   it { should respond_to(:password_digest) }
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
   it { should respond_to(:authenticate) }
+  it { should respond_to(:remember_token) }
 
   it { should be_valid }
 
@@ -137,5 +141,11 @@ describe User do
       @user.save
       @user.reload.email.should == mixed_case_email.downcase
     end
+  end
+
+  # When a user is saved it should have a remember token.
+  describe "remember token" do
+    before { @user.save }
+    its(:remember_token) { should_not be_blank }
   end
 end
