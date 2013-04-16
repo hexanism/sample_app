@@ -8,6 +8,13 @@ def valid_signin(user)
   click_button "Sign in"
 end
 
+def sign_in(user)
+  visit signin_path
+  valid_signin user
+  # Sign in when not using Capybara as well.
+  cookies[:remember_token] = user.remember_token
+end
+
 # Matchers allow us to simlify tests such as checking for errors.
 # With this definition here we can call have_error_message('Invalid')
 # instead of the whole line below.
