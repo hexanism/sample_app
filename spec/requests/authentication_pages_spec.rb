@@ -12,6 +12,11 @@ describe "Authentication" do
       it { should have_selector('title', text: 'Sign in') }
       it { should have_error_message('Invalid') }
 
+      it { should_not have_link('Users') }
+      it { should_not have_link('Profile') }
+      it { should_not have_link('Settings') }
+      it { should_not have_link('Sign out') }
+
       # Flash messages shouldn't persist beyond one redirect.
       describe "after visiting another page" do
         before { click_link "Home" }
@@ -69,6 +74,20 @@ describe "Authentication" do
           it "should render the desired protected page" do
             page.should have_selector('title', text: 'Edit user')
           end
+
+          describe "after signing out again" do
+            before do
+              delete signout_path
+              visit signin_path
+              fill_in "Email", with: user.email
+              fill_in "Password", with: user.password
+              click_button "Sign in"
+            end
+
+            it "should render the default page" do
+              page.should have_selector('title', text: user.name)
+            end
+          end
         end
       end
 
@@ -104,6 +123,21 @@ describe "Authentication" do
       describe "submitting a PUT request to the Users#update action" do
         before { put user_path(wrong_user) }
         specify { response.should redirect_to(root_path) }
+      end
+    end
+
+    describe "as signed in user" do
+      let(:user) { FactoryGirl.create(:user) }
+      before { sign_in user }
+
+      describe "visiting Users#new page" do
+        before { visit new_user_path }
+        it { should_not have_selector('title', text: full_title('Sign up')) }
+      end
+
+      describe "submitting a POST request to the Users#create action" do
+        before { post users_path }
+        specify { response.should redirect_to root_path }
       end
     end
   end
