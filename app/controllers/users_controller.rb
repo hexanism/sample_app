@@ -44,6 +44,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @microposts = @user.microposts.paginate(page: params[:page])
   end
 
   def destroy
@@ -53,16 +54,6 @@ class UsersController < ApplicationController
   end
 
   private
-
-  def signed_in_user
-    unless signed_in?
-      # Any time an action requires being signed in
-      # but the user has to sign in first the attempt
-      # is stored so we can redirect there afterward.
-      store_location
-      redirect_to signin_url, notice: "Please sign in"
-    end
-  end
 
   def correct_user
     @user = User.find(params[:id])

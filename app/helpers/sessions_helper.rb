@@ -18,6 +18,16 @@ module SessionsHelper
     cookies.delete(:remember_token)
   end
 
+  def signed_in_user
+    unless signed_in?
+      # Any time an action requires being signed in
+      # but the user has to sign in first the attempt
+      # is stored so we can redirect there afterward.
+      store_location
+      redirect_to signin_url, notice: "Please sign in"
+    end
+  end
+
   # If the current_user is nil returns false,
   # otherwise true.
   def signed_in?
