@@ -49,6 +49,16 @@ describe "Static pages" do
           page.should have_selector("li##{item.id}", text: item.content)
         end
       end
+
+      it "should display micropost count in sidebar" do
+        page.should have_content("2 microposts")
+
+        click_link "delete"
+        page.should have_content("1 micropost")
+
+        click_link "delete"
+        page.should have_content("0 microposts")
+      end
     end
   end
 
